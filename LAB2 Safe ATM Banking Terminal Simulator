@@ -1,0 +1,70 @@
+void checkBalance({required String name, required double balance}) =>
+    print("$name, your balance: $balance");
+
+double deposit({required double currentBalance, double? amount}) {
+  double value = amount ?? 0.0;
+  double newBalance = currentBalance + value;
+
+  print("Deposit: $value");
+  print("New balance: $newBalance");
+
+  return newBalance;
+}
+
+double withdraw({
+  required String name,
+  required double currentBalance,
+  double? amount,
+  int? pinCode,
+}) {
+  int pin = pinCode ?? 0000;
+
+  if (pin != 1234) {
+    print("$name, wrong PIN. Transaction declined");
+    return currentBalance;
+  }
+
+  double value = amount ?? 0.0;
+
+  if (value > currentBalance) {
+    print("$name, insufficient funds. Transaction declined");
+    return currentBalance;
+  }
+
+  double newBalance = currentBalance - value;
+
+  print("$name, you withdrew $value");
+  print("New balance: $newBalance");
+
+  return newBalance;
+}
+
+void main() {
+  double balance = 50000;
+
+  checkBalance(name: "Adlan", balance: balance);
+
+  balance = deposit(currentBalance: balance, amount: 10000);
+  balance = deposit(currentBalance: balance);
+
+  balance = withdraw(
+    name: "Adlan",
+    currentBalance: balance,
+    amount: 5000,
+    pinCode: 1234,
+  );
+  balance = withdraw(
+    name: "Adlan",
+    currentBalance: balance,
+    amount: 5000,
+    pinCode: 1111,
+  );
+  balance = withdraw(
+    name: "Adlan",
+    currentBalance: balance,
+    amount: 999999,
+    pinCode: 1234,
+  );
+
+  checkBalance(name: "Adlan", balance: balance);
+}
