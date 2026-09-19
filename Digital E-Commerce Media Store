@@ -1,0 +1,94 @@
+abstract class MediaItem {
+  String id;
+  String title;
+  double price;
+
+  MediaItem(this.id, this.title, this.price);
+
+  String getDetails();
+}
+
+mixin Downloadable {
+  void download(String title) {
+    print("Downloading $title...");
+  }
+}
+
+class Audiobook extends MediaItem with Downloadable {
+  double durationHours;
+  String narrator;
+
+  Audiobook(
+    String id,
+    String title,
+    double price,
+    this.durationHours,
+    this.narrator,
+  ) : super(id, title, price);
+
+  @override
+  String getDetails() {
+    return "Audiobook: $title, narrator: $narrator, $durationHours h, $price";
+  }
+}
+
+class EBook extends MediaItem with Downloadable {
+  double fileSizeMB;
+  String author;
+
+  EBook(String id, String title, double price, this.fileSizeMB, this.author)
+    : super(id, title, price);
+
+  @override
+  String getDetails() {
+    return "EBook: $title, author: $author, $fileSizeMB MB, $price";
+  }
+}
+
+class ShoppingCart {
+  List<MediaItem> _items = [];
+
+  void addItem(MediaItem item) {
+    _items.add(item);
+  }
+
+  double calculateTotalWithTax({double taxRate = 0.12}) {
+    double sum = _items.fold(0.0, (total, item) => total + item.price);
+    return sum + sum * taxRate;
+  }
+
+  List<MediaItem> filterByMaxPrice(double maxPrice) {
+    return _items.where((item) => item.price <= maxPrice).toList();
+  }
+
+  void printReceipt() {
+    print("RECEIPT:");
+
+    for (MediaItem item in _items) {
+      print(item.getDetails());
+
+      if (item is Downloadable) {
+        (item as Downloadable).download(item.title);
+      }
+    }
+
+    print("");
+    print("Total with tax: ${calculateTotalWithTax()}");
+  }
+}
+
+void main() {
+  ShoppingCart cart = ShoppingCart();
+
+  cart.addItem(Audiobook("A1", "Dune", 5000, 21.5, "Scott Brick"));
+  cart.addItem(EBook("E1", "Clean Code", 8500, 12.4, "Robert Martin"));
+  cart.addItem(EBook("E2", "Dart Basics", 3000, 5.2, "John Smith"));
+
+  cart.printReceipt();
+
+  print("");
+  print("Cheaper than 6000:");
+  for (MediaItem item in cart.filterByMaxPrice(6000)) {
+    print(item.getDetails());
+  }
+}
