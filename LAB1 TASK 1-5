@@ -1,0 +1,109 @@
+void main() {
+  //task1
+  for (int digit = 1; digit <= 10; digit++) {
+    print("MULTIPLICATION TABLE for digit $digit");
+    for (int i = 1; i <= 10; i++) {
+      print("$digit * $i = ${i * digit}");
+    }
+    print("");
+  }
+  //task 2
+  String date = "28.02.2024";
+
+  List<String> parts = date.split(".");
+  int day = int.parse(parts[0]);
+  int month = int.parse(parts[1]);
+  int year = int.parse(parts[2]);
+  int maxDay = 31;
+
+  if (month == 4 || month == 6 || month == 9 || month == 11) {
+    maxDay = 30;
+  }
+
+  if (month == 2) {
+    maxDay = 28;
+    if (year % 4 == 0) {
+      maxDay = 29;
+    }
+    if (year % 100 == 0) {
+      maxDay = 28;
+    }
+    if (year % 400 == 0) {
+      maxDay = 29;
+    }
+  }
+  if (day < 1 || day > maxDay || month < 1 || month > 12) {
+    print("$date -> invalid date");
+  } else {
+    day = day + 1;
+
+    if (day > maxDay) {
+      day = 1;
+      month = month + 1;
+    }
+
+    if (month > 12) {
+      month = 1;
+      year = year + 1;
+    }
+
+    print("$date -> $day.$month.$year");
+  }
+
+  //Task 3
+  String text = "flutter mobile development";
+  int count = 0;
+
+  for (int i = 0; i < text.length; i++) {
+    String letter = text[i];
+
+    if (letter == "a" ||
+        letter == "e" ||
+        letter == "i" ||
+        letter == "o" ||
+        letter == "u") {
+      count = count + 1;
+    }
+  }
+
+  print("$text -> $count");
+
+  //Task 4
+  List<int> numbers = [14, 88, 3, 42, 99, 12, 67];
+
+  int first = numbers[0];
+  int last = numbers[numbers.length - 1];
+
+  int min = first;
+  int max = first;
+
+  for (int i = 1; i < numbers.length; i++) {
+    if (numbers[i] > max) {
+      max = numbers[i];
+    }
+    if (numbers[i] < min) {
+      min = numbers[i];
+    }
+  }
+  print("max: $max, min: $min");
+
+  //task5
+  int number = 6;
+  bool isPrime = true;
+
+  if (number < 2) {
+    isPrime = false;
+  }
+
+  for (int i = 2; i < number; i++) {
+    if (number % i == 0) {
+      isPrime = false;
+    }
+  }
+
+  if (isPrime) {
+    print("$number -> prime number");
+  } else {
+    print("$number -> not prime number");
+  }
+}
